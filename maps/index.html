@@ -1,0 +1,40 @@
+<!doctype html>
+<html style="height: 100%;">
+<head>
+	<title>My Experiments with Leaflet</title>
+	<link rel="stylesheet" href="./css/leaflet.css">
+</head>
+<body style="height: 100%; padding:0; margin:0;">
+    <div id="map" style="width: 600px; height: 100%;"></div>
+    <script src="./js/leaflet.js" type="text/javascript"></script>
+    <script>
+	    var map = L.map('map');
+	    L.tileLayer('http://{s}.tile.cloudmade.com/b03a54f3c5b444529dd1c20f84b502a2/997/256/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+		}).addTo(map);
+		map.locate({setView: true, maxZoom: 16});
+		function onLocationFound(e) {
+		    var radius = e.accuracy/2;
+		    console.log(e.latlng);
+		    console.log(e);
+		    marker = new L.marker(e.latlng, { draggable: true});
+		    marker.bindPopup("<b>Current Location?</b><br />Drag me to change it.").openPopup();
+		    marker.on('dragend', function() {
+		                                  console.log(this.getLatLng());
+		                              });
+		    marker.on('click', function() {
+ 		                                  console.log(this.getLatLng());
+		                              });
+		    marker.addTo(map);
+		    L.circle(e.latlng, radius).addTo(map);
+		}
+		
+		function newLocation(e) {
+		    console.log(e.latlng);
+		}
+		map.on('locationfound', onLocationFound);
+	</script>
+</body>
+		
+
